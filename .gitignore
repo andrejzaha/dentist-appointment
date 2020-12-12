@@ -35,7 +35,4 @@ build/
 /target
 /frontend/node_modules
 /frontend/build
-/.mvn/wrapper/
-/mvnw
-/mvnw.cmd
 /frontend/public/
