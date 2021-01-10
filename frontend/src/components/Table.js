@@ -1,4 +1,8 @@
-import React from "react";
+import React, {
+    useEffect,
+    useState
+} from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -45,22 +49,22 @@ const useStyles = makeStyles(theme => ({
 export default function SimpleTable() {
   const classes = useStyles();
 
-  const [data, upDateData] = React.useState([]);
-  const [firstLoad, setLoad] = React.useState(true);
-  let isLoading = true;
+  const [
+    data, setData
+  ] = useState([]);
 
-  async function sampleFunc() {
-    let response = await fetch("/api/find-all-doctors");
-    let body = await response.json();
-    upDateData(body);
-  }
+  const [
+    isLoading, setIsLoading
+  ] = useState(true);
 
-  if (firstLoad) {
-    sampleFunc();
-    setLoad(false);
-  }
-
-  if (data.length > 0) isLoading = false;
+  useEffect(() => {
+    fetch("/api/find-all-doctors")
+        .then(response => response.json())
+        .then(result => {
+            setIsLoading(false);
+            setData(result);
+        })
+  }, []);
 
   return (
     <div className={classes.paper}>
@@ -68,7 +72,7 @@ export default function SimpleTable() {
         <GroupIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Employee Directory
+        Employee Directory ->
       </Typography>
 
       {isLoading ? (
