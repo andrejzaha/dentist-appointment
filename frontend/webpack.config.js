@@ -6,7 +6,8 @@ module.exports = {
 
     output: {
         filename: 'bundle.js',
-        path: path.join(__dirname, 'public')
+        path: path.join(__dirname, 'public'),
+        publicPath: '/'
     },
 
     module: {
@@ -34,7 +35,8 @@ module.exports = {
           target: 'http://localhost:8080',
           pathRewrite: {'^/backend' : '/api'}
         }
-      }
+      },
+      historyApiFallback: true,
     },
 
 };
