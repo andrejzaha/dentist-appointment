@@ -9,6 +9,8 @@ public class AvailabilityFront {
 
     private String dayOfWeek;
 
+    private String formattedDate;
+
     private String fromHour;
 
     private String fromMinute;

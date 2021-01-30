@@ -9,8 +9,10 @@ public class DoctorFront {
 
     private Long id;
 
-    private String firstName;
+    private String displayedName;
 
-    private String lastName;
+    public void setDisplayedName(String lastName, String firstName) {
+        this.displayedName = "Dr. " + lastName + " " + firstName;
+    }
 
 }

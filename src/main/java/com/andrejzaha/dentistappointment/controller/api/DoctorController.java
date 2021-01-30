@@ -1,6 +1,7 @@
 package com.andrejzaha.dentistappointment.controller.api;
 
 import com.andrejzaha.dentistappointment.model.Doctor;
+import com.andrejzaha.dentistappointment.model.frontend.DoctorFront;
 import com.andrejzaha.dentistappointment.service.AvailabilityService;
 import com.andrejzaha.dentistappointment.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class DoctorController {
     private DoctorService doctorService;
 
     @GetMapping("/find-all-doctors")
-    public List<Doctor> findAllDoctors() {
-        return doctorService.findAllDoctors();
+    public List<DoctorFront> findAllDoctors() {
+        return doctorService.findAllDoctorsForFront();
     }
 
 }

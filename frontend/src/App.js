@@ -1,12 +1,28 @@
-import React, { Component } from "react";
-import { Route, BrowserRouter as Router } from "react-router-dom";
+import React, {
+    Component
+} from "react";
+
+import {
+    Route,
+    Redirect,
+    Switch,
+    BrowserRouter as Router
+} from "react-router-dom";
+
+import ReasonChoicePage from "./pages/reason-choice-page/reason-choice-page";
+
 import Table from "./components/Table";
 
 class App extends Component {
   render() {
     return (
       <Router>
-        <Route exact path="/view" component={Table} />
+        <Switch>
+            <Route exact path="/view" component={Table} />
+            <Route exact path="/reason-choice" component={ReasonChoicePage} />
+
+            <Redirect from='/' to='/reason-choice'/>
+        </Switch>
       </Router>
     );
   }

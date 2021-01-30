@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -82,12 +83,20 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
         availabilityFront.setDayOfWeek(tempFrom.getDayOfWeek().toString());
 
+        availabilityFront.setFormattedDate(getFormattedDate(tempFrom));
+
         availabilityFront.setFromHour(String.valueOf(tempFrom.getHour()));
         availabilityFront.setFromMinute(String.valueOf(tempFrom.getMinute()));
 
         availabilityFront.setToHour(String.valueOf(tempTo.getHour()));
         availabilityFront.setToMinute(String.valueOf(tempTo.getMinute()));
         return availabilityFront;
+    }
+
+    private String getFormattedDate(LocalDateTime tempFrom) {
+        return Objects.nonNull(tempFrom)
+                ? tempFrom.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+                : "";
     }
 
     private LocalDateTime calculateNextIntervalEndDate(Availability availability,

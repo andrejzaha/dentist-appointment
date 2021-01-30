@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Objects;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -64,11 +65,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         DoctorFront doctorFront = new DoctorFront();
 
         doctorFront.setId(doctor.getId());
-        doctorFront.setFirstName(doctor.getFirstName());
-        doctorFront.setLastName(doctor.getLastName());
+        doctorFront.setDisplayedName(doctor.getLastName(), doctor.getFirstName());
 
         return doctorFront;
     }
+
 
     private ReasonFront getReasonFront(Reason reason) {
         ReasonFront reasonFront = new ReasonFront();
@@ -84,8 +85,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentChoiceModel appointmentChoiceModel = new AppointmentChoiceModel();
 
         DoctorFront doctorFront = new DoctorFront();
-        doctorFront.setFirstName("");
-        doctorFront.setLastName("");
+        doctorFront.setDisplayedName("");
 
         ReasonFront reasonFront = new ReasonFront();
         reasonFront.setDescription("");
