@@ -3,24 +3,16 @@ import React, {
     useState
 } from "react";
 
-import {
-    makeStyles
-} from '@material-ui/core/styles';
+import './reason-choice-page.scss';
 
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
+import { Select } from 'antd';
+import { DatePicker } from 'antd';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
-  },
-}));
+import { DownOutlined } from '@ant-design/icons';
+
+const { Option } = Select;
 
 function ReasonChoicePage() {
-    const classes = useStyles();
 
     const [
         reasonChoiceModel, setReasonChoiceModel
@@ -31,8 +23,8 @@ function ReasonChoicePage() {
     ] = useState([]);
 
     const [
-      doctor, setDoctor
-    ] = useState('3');
+      doctorId, setDoctorId
+    ] = useState('');
 
     useEffect(() => {
         fetch('/backend/get-reason-choice-model')
@@ -58,32 +50,32 @@ function ReasonChoicePage() {
       );
     };
 
-    const handleDoctorSelectChange = (event) => {
-      console.log('event.target', event.target);
-      console.log('doctor before', doctor);
-      setDoctor(event.target.value);
-    }
+    const handleDoctorSelectChange = (selectedDoctorId) => {
+      console.log('doctorId before=', doctorId);
+      console.log('selected doctorId=', selectedDoctorId);
+      setDoctorId(selectedDoctorId);
+    };
 
     return (
         <>
-          <form className={classes.root} noValidate autoComplete="off">
-            <div>
-              <TextField
-                id="standard-select-doctor"
-                select
-                label="Doctor"
-                value={doctor}
-                onChange={handleDoctorSelectChange}
-                helperText="Please select your doctor"
-              >
-                {doctors.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
+          <Select
+            defaultValue="Please select a doctor"
+            className="doctor-select"
+            onChange={handleDoctorSelectChange}
+          >
+            {
+              doctors.map(option => (
+                  <Option
+                    key={option.value}
+                    value={option.value}
+                    onClick={handleDoctorSelectChange}
+                  >
                     {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-          </form>
+                  </Option>
+                )
+              )
+            }
+          </Select>
         </>
     );
 };
