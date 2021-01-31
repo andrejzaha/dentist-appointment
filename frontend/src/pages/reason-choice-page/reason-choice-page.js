@@ -19,11 +19,19 @@ function ReasonChoicePage() {
     ] = useState({});
 
     const [
-      doctors, setDoctors
+      doctorsForSelect, setDoctorsForSelect
+    ] = useState([]);
+
+    const [
+      reasonsForSelect, setReasonsForSelect
     ] = useState([]);
 
     const [
       doctorId, setDoctorId
+    ] = useState('');
+
+    const [
+      reasonId, setReasonId
     ] = useState('');
 
     useEffect(() => {
@@ -31,13 +39,14 @@ function ReasonChoicePage() {
             .then(response => response.json())
             .then(result => {
               setReasonChoiceModel(result);
-              setDoctors(updateDoctors(result.doctors));
+              setDoctorsForSelect(getItemForSelect(result.doctors, getDoctorForSelect));
+              setReasonsForSelect(getItemForSelect(result.reasons, getReasonForSelect));
             });
     }, []);
 
-    const updateDoctors = doctorsFromModel => {
-      return doctorsFromModel
-        ? doctorsFromModel.map(getDoctorForSelect)
+    const getItemForSelect = (itemsFromBackend, mappingFunction) => {
+      return itemsFromBackend
+        ? itemsFromBackend.map(mappingFunction)
         : [];
     };
 
@@ -53,7 +62,24 @@ function ReasonChoicePage() {
     const handleDoctorSelectChange = (selectedDoctorId) => {
       console.log('doctorId before=', doctorId);
       console.log('selected doctorId=', selectedDoctorId);
+
       setDoctorId(selectedDoctorId);
+    };
+
+    const getReasonForSelect = reasonFromModel => {
+      return (
+        {
+          value: reasonFromModel?.id,
+          label: reasonFromModel?.description + " (" + reasonFromModel.durationInMinutes + " minutes)"
+        }
+      );
+    };
+
+    const handleReasonSelectChange = (selectedReasonId) => {
+      console.log('reasonId before=', reasonId);
+      console.log('selected reasonId=', selectedReasonId);
+
+      setReasonId(selectedReasonId);
     };
 
     return (
@@ -64,13 +90,31 @@ function ReasonChoicePage() {
             onChange={handleDoctorSelectChange}
           >
             {
-              doctors.map(option => (
+              doctorsForSelect.map(d => (
                   <Option
-                    key={option.value}
-                    value={option.value}
+                    key={d.value}
+                    value={d.value}
                     onClick={handleDoctorSelectChange}
                   >
-                    {option.label}
+                    {d.label}
+                  </Option>
+                )
+              )
+            }
+          </Select>
+          <Select
+            defaultValue="Please select a reason"
+            className="reason-select"
+            onChange={handleReasonSelectChange}
+          >
+            {
+              reasonsForSelect.map(r => (
+                  <Option
+                    key={r.value}
+                    value={r.value}
+                    onClick={handleReasonSelectChange}
+                  >
+                    {r.label}
                   </Option>
                 )
               )

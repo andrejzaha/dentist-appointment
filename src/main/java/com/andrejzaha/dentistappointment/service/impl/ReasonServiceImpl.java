@@ -34,6 +34,7 @@ public class ReasonServiceImpl implements ReasonService {
 
         reasonFront.setId(reason.getId());
         reasonFront.setDescription(reason.getDescription());
+        reasonFront.setDurationInMinutes(reason.getDurationInMinutes());
 
         return reasonFront;
     }
