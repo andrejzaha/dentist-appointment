@@ -1,5 +1,16 @@
 @import '~antd/dist/antd.css';
 
-.doctor-select {
-  width: 12rem;
+.select-container {
+  display: inline-grid;
+  justify-content: center;
+  align-items: center;
+
+  margin: auto;
+
+  height: 20rem;
+  width: 100%;
+}
+
+.item-select {
+  width: 17rem;
 }

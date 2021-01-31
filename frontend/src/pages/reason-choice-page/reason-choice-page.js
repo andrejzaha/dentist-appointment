@@ -7,16 +7,19 @@ import './reason-choice-page.scss';
 
 import { Select } from 'antd';
 import { DatePicker } from 'antd';
+import { Button } from 'antd';
 
 import { DownOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-function ReasonChoicePage() {
+import {
+  SELECTOR_TYPE_DOCTOR,
+  SELECTOR_TYPE_REASON,
+  SELECTOR_TYPE_PERIOD
+} from './selector-helper.js';
 
-    const [
-        reasonChoiceModel, setReasonChoiceModel
-    ] = useState({});
+function ReasonChoicePage() {
 
     const [
       doctorsForSelect, setDoctorsForSelect
@@ -27,6 +30,10 @@ function ReasonChoicePage() {
     ] = useState([]);
 
     const [
+      periodsForSelect, setPeriodsForSelect
+    ] = useState([]);
+
+    const [
       doctorId, setDoctorId
     ] = useState('');
 
@@ -34,13 +41,17 @@ function ReasonChoicePage() {
       reasonId, setReasonId
     ] = useState('');
 
+    const [
+      periodId, setPeriodId
+    ] = useState('');
+
     useEffect(() => {
         fetch('/backend/get-reason-choice-model')
             .then(response => response.json())
             .then(result => {
-              setReasonChoiceModel(result);
               setDoctorsForSelect(getItemForSelect(result.doctors, getDoctorForSelect));
               setReasonsForSelect(getItemForSelect(result.reasons, getReasonForSelect));
+              setPeriodsForSelect(getItemForSelect(result.periodCodes, getPeriodForSelect));
             });
     }, []);
 
@@ -59,13 +70,6 @@ function ReasonChoicePage() {
       );
     };
 
-    const handleDoctorSelectChange = (selectedDoctorId) => {
-      console.log('doctorId before=', doctorId);
-      console.log('selected doctorId=', selectedDoctorId);
-
-      setDoctorId(selectedDoctorId);
-    };
-
     const getReasonForSelect = reasonFromModel => {
       return (
         {
@@ -75,51 +79,102 @@ function ReasonChoicePage() {
       );
     };
 
-    const handleReasonSelectChange = (selectedReasonId) => {
-      console.log('reasonId before=', reasonId);
-      console.log('selected reasonId=', selectedReasonId);
+    const getPeriodForSelect = periodFromModel => {
+      return (
+        {
+          value: periodFromModel?.label,
+          label: periodFromModel?.label
+        }
+      );
+    };
 
-      setReasonId(selectedReasonId);
+    const getSelectorHandler = (selectorType, selectedValue) => {
+      console.log('[getSelectorHandler] selectorType=', selectorType);
+      console.log('[getSelectorHandler] selectedValue=', selectedValue);
+
+      let handler;
+
+      if (selectorType === SELECTOR_TYPE_DOCTOR) {
+        handler = (selectedValue) => {
+          setDoctorId(selectedValue);
+        };
+      } else if (selectorType === SELECTOR_TYPE_REASON) {
+        handler = (selectedValue) => {
+          setReasonId(selectedValue);
+        };
+      } else if (selectorType === SELECTOR_TYPE_PERIOD) {
+        handler = (selectedValue) => {
+          setPeriodId(selectedValue);
+        };
+      }
+      return handler;
+    }
+
+    const handleCheckAvailabilitiesClick = event => {
+      window.location.href = "/view";
     };
 
     return (
         <>
-          <Select
-            defaultValue="Please select a doctor"
-            className="doctor-select"
-            onChange={handleDoctorSelectChange}
-          >
-            {
-              doctorsForSelect.map(d => (
-                  <Option
-                    key={d.value}
-                    value={d.value}
-                    onClick={handleDoctorSelectChange}
-                  >
-                    {d.label}
-                  </Option>
+          <div className="select-container">
+            <Select
+              defaultValue="Please select a doctor"
+              className="item-select"
+              onChange={id => getSelectorHandler(SELECTOR_TYPE_DOCTOR, id)}
+            >
+              {
+                doctorsForSelect.map(d => (
+                    <Option
+                      key={d.value}
+                      value={d.value}
+                    >
+                      {d.label}
+                    </Option>
+                  )
                 )
-              )
-            }
-          </Select>
-          <Select
-            defaultValue="Please select a reason"
-            className="reason-select"
-            onChange={handleReasonSelectChange}
-          >
-            {
-              reasonsForSelect.map(r => (
-                  <Option
-                    key={r.value}
-                    value={r.value}
-                    onClick={handleReasonSelectChange}
-                  >
-                    {r.label}
-                  </Option>
+              }
+            </Select>
+            <Select
+              defaultValue="Please select a reason"
+              className="item-select"
+              onChange={id => getSelectorHandler(SELECTOR_TYPE_REASON, id)}
+            >
+              {
+                reasonsForSelect.map(r => (
+                    <Option
+                      key={r.value}
+                      value={r.value}
+                    >
+                      {r.label}
+                    </Option>
+                  )
                 )
-              )
-            }
-          </Select>
+              }
+            </Select>
+            <Select
+              defaultValue="Please select a period"
+              className="item-select"
+              onChange={id => getSelectorHandler(SELECTOR_TYPE_PERIOD, id)}
+            >
+              {
+                periodsForSelect.map(p => (
+                    <Option
+                      key={p.value}
+                      value={p.value}
+                    >
+                      {p.label}
+                    </Option>
+                  )
+                )
+              }
+            </Select>
+            <Button
+              type="primary"
+              onClick={handleCheckAvailabilitiesClick}
+            >
+              Check availabilities
+            </Button>
+          </div>
         </>
     );
 };
