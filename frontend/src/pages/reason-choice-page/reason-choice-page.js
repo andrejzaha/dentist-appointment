@@ -88,29 +88,23 @@ function ReasonChoicePage() {
       );
     };
 
-    const getSelectorHandler = (selectorType, selectedValue) => {
+    const onSelectorChange = (selectorType, selectedValue) => {
       console.log('[getSelectorHandler] selectorType=', selectorType);
       console.log('[getSelectorHandler] selectedValue=', selectedValue);
 
-      let handler;
-
       if (selectorType === SELECTOR_TYPE_DOCTOR) {
-        handler = (selectedValue) => {
-          setDoctorId(selectedValue);
-        };
+        setDoctorId(selectedValue);
       } else if (selectorType === SELECTOR_TYPE_REASON) {
-        handler = (selectedValue) => {
-          setReasonId(selectedValue);
-        };
+        setReasonId(selectedValue);
       } else if (selectorType === SELECTOR_TYPE_PERIOD) {
-        handler = (selectedValue) => {
-          setPeriodId(selectedValue);
-        };
+        setPeriodId(selectedValue);
       }
-      return handler;
     }
 
     const handleCheckAvailabilitiesClick = event => {
+    console.log('[reason-choice-page] doctorId=' + doctorId);
+    console.log('[reason-choice-page] reasonId=', reasonId);
+    console.log('[reason-choice-page] periodId=', periodId);
       window.location.href = "/view";
     };
 
@@ -120,7 +114,7 @@ function ReasonChoicePage() {
             <Select
               defaultValue="Please select a doctor"
               className="item-select"
-              onChange={id => getSelectorHandler(SELECTOR_TYPE_DOCTOR, id)}
+              onChange={id => onSelectorChange(SELECTOR_TYPE_DOCTOR, id)}
             >
               {
                 doctorsForSelect.map(d => (
@@ -137,7 +131,7 @@ function ReasonChoicePage() {
             <Select
               defaultValue="Please select a reason"
               className="item-select"
-              onChange={id => getSelectorHandler(SELECTOR_TYPE_REASON, id)}
+              onChange={id => onSelectorChange(SELECTOR_TYPE_REASON, id)}
             >
               {
                 reasonsForSelect.map(r => (
@@ -154,7 +148,7 @@ function ReasonChoicePage() {
             <Select
               defaultValue="Please select a period"
               className="item-select"
-              onChange={id => getSelectorHandler(SELECTOR_TYPE_PERIOD, id)}
+              onChange={id => onSelectorChange(SELECTOR_TYPE_PERIOD, id)}
             >
               {
                 periodsForSelect.map(p => (

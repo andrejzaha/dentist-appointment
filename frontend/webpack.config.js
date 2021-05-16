@@ -1,8 +1,12 @@
 const path = require('path');
+const webpack = require("webpack");
 
 module.exports = {
 
-    entry: './src/index.js',
+    entry: [
+      'react-hot-loader/patch',
+      './src/index.js',
+    ],
 
     output: {
         filename: 'bundle.js',
@@ -10,10 +14,14 @@ module.exports = {
         publicPath: '/'
     },
 
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ],
+
     module: {
        rules: [
          {
-          loader: 'babel-loader',
+          loader: ['react-hot-loader/webpack', 'babel-loader'],
           test: /\.js$/,
           exclude: /node_modules/
          },
@@ -28,7 +36,7 @@ module.exports = {
 
     devServer: {
       contentBase: path.join(__dirname, 'public'),
-      compress: true,
+      hot: true,
       port: 9000,
       proxy: {
         '/backend': {

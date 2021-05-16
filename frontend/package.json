@@ -17,6 +17,7 @@
     "babel-loader": "^8.0.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-hot-loader": "^4.13.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
@@ -26,8 +27,8 @@
     "webpack-dev-server": "^3.9.0"
   },
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server --watch",
+    "start": "webpack-dev-server --watch --hot",
+    "build": "webpack --config ./webpack.config.js --mode production",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
