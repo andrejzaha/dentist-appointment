@@ -5,19 +5,38 @@ import React, {
 
 import './reason-choice-page.scss';
 
-import { Select } from 'antd';
-import { DatePicker } from 'antd';
-import { Button } from 'antd';
+import {
+  Select
+} from 'antd';
+import {
+  DatePicker
+} from 'antd';
+import {
+  Button
+} from 'antd';
 
-import { DownOutlined } from '@ant-design/icons';
+import {
+  DownOutlined
+} from '@ant-design/icons';
 
-const { Option } = Select;
+const {
+Option
+} = Select;
+
 
 import {
   SELECTOR_TYPE_DOCTOR,
   SELECTOR_TYPE_REASON,
-  SELECTOR_TYPE_PERIOD
+  SELECTOR_TYPE_PERIOD,
 } from './selector-helper.js';
+
+import {
+  RequestUtils,
+} from '../../utils';
+const {
+  formatGivenParamsAsQueryString
+} = RequestUtils;
+
 
 function ReasonChoicePage() {
 
@@ -105,7 +124,19 @@ function ReasonChoicePage() {
     console.log('[reason-choice-page] doctorId=' + doctorId);
     console.log('[reason-choice-page] reasonId=', reasonId);
     console.log('[reason-choice-page] periodId=', periodId);
-      window.location.href = "/view";
+    // let's say we are required (because of the backend api constraints)
+    // to use the '-' format for the query params name
+    const params = {
+      ['doctor-id']: doctorId,
+      ['reason-id']: reasonId,
+      ['period-code']: periodId,
+    };
+    fetch(`/backend/get-appointment-choice-model-by-period-code?${formatGivenParamsAsQueryString(params)}`)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        window.location.href = "/view";
+      });
     };
 
     return (

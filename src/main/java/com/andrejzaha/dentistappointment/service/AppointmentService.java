@@ -9,4 +9,8 @@ public interface AppointmentService {
     AppointmentChoiceModel getAppointmentChoiceModel(Long doctorId, Long reasonId,
                                                      LocalDate fromDate, LocalDate toDate);
 
+    AppointmentChoiceModel getAppointmentChoiceModelByPeriodCodeAsString(Long doctorId,
+                                                                         Long reasonId,
+                                                                         String periodCode);
+
 }

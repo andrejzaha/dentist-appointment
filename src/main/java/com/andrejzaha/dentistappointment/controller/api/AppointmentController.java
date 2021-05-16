@@ -28,4 +28,13 @@ public class AppointmentController {
                 .getAppointmentChoiceModel(doctorId, reasonId, fromDate, toDate);
     }
 
+    @GetMapping("/get-appointment-choice-model-by-period-code")
+    public AppointmentChoiceModel getAppointmentChoiceModelUsingCustomPeriod(
+            @RequestParam(name = "doctor-id") Long doctorId,
+            @RequestParam(name = "reason-id") Long reasonId,
+            @RequestParam(name="period-code") String periodCode) {
+        return appointmentService
+                .getAppointmentChoiceModelByPeriodCodeAsString(doctorId, reasonId, periodCode);
+    }
+
 }
